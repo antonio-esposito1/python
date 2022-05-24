@@ -1,0 +1,33 @@
+---
+
+
+  - name: PLAY1 - ISSUE SHOW COMMAND FOR XR
+    hosts: all-vpe
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: ISSUE SHOW COMMAND
+        iosxr_command:
+          commands:
+           - show ip int br
+          provider: "{{ base_provider }}"
+        register: int_br
+
+      - name: DEBUG INTERFACE BREAF AS JSON
+        debug:
+          var: int_br
+
+      - name: CREATE INTERFACE BREAF FACT
+        set_fact:
+          existing_int: "{{ int_br.stdout.0 }}"
+
+      - name: DEBUG EXISTING INTERFACE 
+        debug: 
+          var: existing_int 
+
+      - name: PERFORM COMPLIANCE CHECK
+        assert:
+          that:
+            - "'10.177' in existing_int"

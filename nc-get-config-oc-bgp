@@ -1,0 +1,19 @@
+
+HOST=mivpe013
+PRINT="pygmentsize -g"
+FILE="get-config-oc-bgp.xml"
+SEPARATOR="------------------------------------------------------"
+
+clear
+$PRINT netconf/$FILE
+echo $SEPARATOR
+read -p "press any key to send"
+rm -f rs-$FILE
+
+netconf/nc.py -connect antonio:admin@$HOST:830 \
+              -hello \
+              -file netconf/$FILE
+              -close
+echo $SEPARATOR
+[ -r "rs-$FILE" ] && $PRINT rs-$FILE
+exit

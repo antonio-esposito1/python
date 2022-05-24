@@ -1,0 +1,25 @@
+---
+
+
+  - name: PLAY1 - CREATE REPORT
+    hosts: all-vpe
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: COLLECT FACT
+        iosxr_facts:
+          provider: "{{ base_provider }}"
+
+      - name: GENERATE DEVICE SPECIFIC REPOT
+        template:
+          src: reports/facts.j2
+          dest: reports/facts/{{ inventory_hostname }}.md
+
+      - name: CREATE MASTER
+        assemble:
+          src: report/facts/
+          dest: reports/master-report.md
+          delimeter: "---"
+        run_once: true

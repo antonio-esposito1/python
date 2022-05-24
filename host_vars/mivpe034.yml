@@ -1,0 +1,8 @@
+---
+
+interfaces:
+  loopback0: 10.176.1.30/32
+
+isis:
+  net: 49.cafe.0101.7600.1030.00
+

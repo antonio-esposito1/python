@@ -1,0 +1,73 @@
+---
+   - name: PLAY1
+     hosts: z1-vpe
+     connection: local
+     gather_facts : no
+
+     tasks:
+
+       - name: TASK1 Deploy snmp command
+         iosxr_config:
+          commands:
+             - snmp-server ifindex persist
+             - snmp-server host 10.192.10.7 traps version 2c kinte
+             - snmp-server host 10.192.10.8 traps version 2c kinte
+             - ipv4 access-list acl_50 10 remark Snmp Server Xspotter
+             - ipv4 access-list acl_50 400 remark SNMP server CEM Provvisori
+             - ipv4 access-list acl_50 410 permit ipv4 host 10.192.10.7 any
+             - ipv4 access-list acl_50 420 permit ipv4 host 10.192.10.8 any
+             - snmp-server community kinte RO SystemOwner IPv4 acl_50
+          provider:
+            username: antonio
+            password: admin
+            host: "{{ inventory_hostname }}"
+
+       - name: TASK2 Deploy isis command
+         iosxr_config:
+          commands:
+             - router isis CORE log adjacency changes 
+             - router isis CORE log adjacency changes
+             - router isis CORE lsp-gen-interval maximum-wait 5000 initial-wait 1 secondary-wait 20
+             - router isis CORE lsp-refresh-interval 65000
+             - router isis CORE max-lsp-lifetime 65535
+             - ipv4 prefix-list VIPNET_LOOPBACK 10 permit 0.0.0.0/0 eq 32
+             - router isis CORE address-family ipv4 unicast spf prefix-priority high VIPNET_LOOPBACK
+             - router isis CORE address-family ipv4 unicast router-id Loopback0
+          provider:
+            username: antonio
+            password: admin
+            host: "{{ inventory_hostname }}"
+
+       #- name: TASK3 RPL CONFIG
+       #  iosxr_config:
+       #   commands:
+       #      - route-policy PIC
+       #      - set path-selection backup 1 install multipath-protect
+       #      - end-policy
+       #   provider:
+       #     username: antonio
+       #     password: admin
+       #     host: "{{ inventory_hostname }}"
+
+
+       - name: TASK4 SHOW SNMP
+         iosxr_command:
+          commands:
+            - show run | i snmp
+          provider:
+            username: antonio
+            password: admin
+            host: "{{ inventory_hostname }}"
+
+       - name: TASK5 NTP 
+         iosxr_config:
+          commands:
+             - ntp server {{ ntp.ntp_server1 }}
+             - ntp server {{ ntp.ntp_server2 }}
+             - ntp server {{ ntp.ntp_server3 }}
+             - ntp server {{ ntp.ntp_server4 }}
+          provider: 
+            username: antonio
+            password: admin
+            host: "{{ inventory_hostname }}"
+

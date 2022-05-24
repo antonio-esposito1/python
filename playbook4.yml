@@ -1,0 +1,27 @@
+---
+
+
+  - name: PLAY1 - ISSUE SHOW COMMAND FOR XR
+    hosts: all-vpe
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: ISSUE SHOW COMMAND
+        iosxr_command:
+          commands:
+           - show run | inc snmp-server community
+          provider: "{{ base_provider }}"
+        register: snmp_data
+
+      - name: DEBUG1
+        debug:
+          var: snmp_data.stdout.0
+      - name: DEBUG2
+        debug:
+          var: snmp_data['stdout'][0]
+      - name: WRITE DATA TO FILE
+        template:
+           src: templates/basic/basic.j2
+           dest: config/snmp/{{ inventory_hostname }}.txt 

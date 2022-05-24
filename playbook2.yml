@@ -1,0 +1,15 @@
+---
+
+
+  - name: PLAY1 - GENERATE SNMP CONFIGURATION
+    hosts: var,vce
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: GENERATE CONFIGURATION FOR EACH OS
+        template:
+           src: "templates/snmp/{{ os }}.j2"
+           dest: "config/snmp/{{ inventory_hostname }}.cfg"
+

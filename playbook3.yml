@@ -1,0 +1,68 @@
+---
+
+
+  - name: PLAY1 - COLLECT FACT FOR XR
+    hosts: z1-vpe
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: COLLECT FACT FOR XR
+        iosxr_facts:
+           provider: "{{ base_provider }}"
+
+      - name: DEBUG XR VERSION
+        debug:
+          var: ansible_net_version
+      - name: DEBUG HOSTNAME
+        debug:
+          var: ansible_net_hostname
+      - name: DEBUG OPAQUE
+        debug:
+          var: ansible_net_all_ipv4_addresses
+      - name: DEBUG OPAQUE
+        debug:
+          var: ansible_net_all_ipv6_addresses
+      - name: DEBUG OPAQUE
+        debug:
+          var: ansible_net_api
+      - name: DEBUG OPAQUE
+        debug:
+          var: ansible_net_config
+      - name: DEBUG OPAQUE
+        debug:
+          var: ansible_net_filesystems
+      - name: DEBUG OPAQUE
+        debug:
+          var: ansible_net_gather_network_resources
+      - name: DEBUG OPAQUE
+        debug: 
+          var: ansible_net_gather_subset
+      - name: DEBUG OPAQUE
+        debug:
+          var: ansible_net_hostname
+      - name: DEBUG OPAQUE
+        debug: 
+          var: ansible_net_image
+      - name: DEBUG OPAQUE
+        debug: 
+          var: ansible_net_interfaces
+      - name: DEBUG OPAQUE
+        debug: 
+          var: ansible_net_memfree_mb
+      - name: DEBUG OPAQUE
+        debug: 
+          var: ansible_net_memtotal_mb
+      - name: DEBUG OPAQUE
+        debug: 
+          var: ansible_net_model
+      - name: DEBUG OPAQUE
+        debug: 
+          var: ansible_net_neighbors
+      - name: DEBUG OPAQUE
+        debug: 
+          var: ansible_net_python_version
+      - name: DEBUG OPAQUE
+        debug:
+          var: ansible_net_version
